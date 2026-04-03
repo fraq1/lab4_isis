@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import LogoutButton from "@/components/LogoutButton";
 import "./globals.css";
 
@@ -36,27 +37,27 @@ export default function RootLayout({
               <p className="text-xs text-purple-300 mt-1">Панель управления</p>
             </div>
             <nav className="space-y-2">
-              <a href="/profile" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-purple-800/30 text-purple-100 hover:bg-purple-700/40 transition">
+              <Link href="/profile" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-purple-800/30 text-purple-100 hover:bg-purple-700/40 transition">
                 <span>👤</span>
                 <span>Профиль</span>
-              </a>
+              </Link>
               <LogoutButton />
-              <a href="/chats" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
+              <Link href="/chats" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
                 <span>💬</span>
                 <span>Чат</span>
-              </a>
-              <a href="/goals" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
+              </Link>
+              <Link href="/goals" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
                 <span>🎯</span>
                 <span>Создать цель</span>
-              </a>
-              <a href="/reports" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
+              </Link>
+              <Link href="/reports" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
                 <span>📝</span>
                 <span>Написать отчет</span>
-              </a>
-              <a href="/find_partner" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
+              </Link>
+              <Link href="/find_partner" className="flex items-center gap-3 px-3 py-2 rounded-lg text-purple-100 hover:bg-purple-700/40 transition">
                 <span>🔍</span>
                 <span>Найти партнера</span>
-              </a>
+              </Link>
             </nav>
           </aside>
 
