@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 type User = {
   id: string
@@ -54,7 +54,7 @@ export default function FindPartnerPage() {
         return
       }
 
-      const { data: usersData, error: usersError } = await supabase
+      const { data: usersData, error: usersError } = await getSupabase()
         .from('users')
         .select('id,email,username,avatar_url,bio,tech_stack,skill_level,trust_rating')
         .neq('id', currentUserId)
@@ -65,7 +65,7 @@ export default function FindPartnerPage() {
         return
       }
 
-      const { data: goalsData, error: goalsError } = await supabase
+      const { data: goalsData, error: goalsError } = await getSupabase()
         .from('goals')
         .select('id,title')
         .eq('created_by', currentUserId)
@@ -91,7 +91,7 @@ export default function FindPartnerPage() {
     setError('')
     setMessage('')
 
-    const { error } = await supabase
+    const { error } = await getSupabase()
       .from('likes')
       .insert([{ from_user_id: currentUserId, to_user_id: currentUser.id, status: 'rejected' }])
 
@@ -126,7 +126,7 @@ export default function FindPartnerPage() {
     setError('')
     setMessage('')
 
-    const { error: likeError } = await supabase
+    const { error: likeError } = await getSupabase()
       .from('likes')
       .insert([{ from_user_id: currentUserId, to_user_id: partnerToPropose.id, status: 'pending' }])
 
@@ -136,7 +136,7 @@ export default function FindPartnerPage() {
     }
 
     const existingChatFilter = `and(user1_id.eq.${currentUserId},user2_id.eq.${partnerToPropose.id}),and(user1_id.eq.${partnerToPropose.id},user2_id.eq.${currentUserId})`
-    const { data: existingChats, error: existingChatError } = await supabase
+    const { data: existingChats, error: existingChatError } = await getSupabase()
       .from('chats')
       .select('id,user1_id,user2_id')
       .or(existingChatFilter)
@@ -152,7 +152,7 @@ export default function FindPartnerPage() {
     )?.id
 
     if (!chatId) {
-      const { data: newChat, error: chatError } = await supabase
+      const { data: newChat, error: chatError } = await getSupabase()
         .from('chats')
         .insert([{ user1_id: currentUserId, user2_id: partnerToPropose.id }])
         .select()
@@ -167,7 +167,7 @@ export default function FindPartnerPage() {
     }
 
     const messageText = `Предлагаю вместе достигнуть цели: ${goal.title}`
-    const { error: messageError } = await supabase
+    const { error: messageError } = await getSupabase()
       .from('messages')
       .insert([{ chat_id: chatId, sender_id: currentUserId, content: messageText }])
 

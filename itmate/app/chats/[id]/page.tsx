@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 type Message = {
   id: string
@@ -52,7 +52,7 @@ export default function ChatDetailPage() {
         return
       }
 
-      const { data: chatData, error: chatError } = await supabase
+      const { data: chatData, error: chatError } = await getSupabase()
         .from('chats')
         .select('id,user1_id,user2_id,created_at')
         .eq('id', chatId)
@@ -73,7 +73,7 @@ export default function ChatDetailPage() {
       setChat(chatData)
 
       const partnerId = chatData.user1_id === currentUserId ? chatData.user2_id : chatData.user1_id
-      const { data: userData, error: userError } = await supabase
+      const { data: userData, error: userError } = await getSupabase()
         .from('users')
         .select('id,username,avatar_url')
         .in('id', [currentUserId, partnerId])
@@ -86,7 +86,7 @@ export default function ChatDetailPage() {
 
       setUsers((userData as User[]).reduce((acc, u) => ({ ...acc, [u.id]: u }), {} as Record<string, User>))
 
-      const { data: messagesData, error: messagesError } = await supabase
+      const { data: messagesData, error: messagesError } = await getSupabase()
         .from('messages')
         .select('id,chat_id,sender_id,content,created_at')
         .eq('chat_id', chatId)
@@ -108,7 +108,7 @@ export default function ChatDetailPage() {
   const sendMessage = async () => {
     if (!input.trim() || !currentUserId) return
 
-    const { error: insertError } = await supabase
+    const { error: insertError } = await getSupabase()
       .from('messages')
       .insert([{ chat_id: chatId, sender_id: currentUserId, content: input.trim() }])
 
@@ -119,7 +119,7 @@ export default function ChatDetailPage() {
 
     setInput('')
 
-    const { data: messagesData, error: messagesError } = await supabase
+    const { data: messagesData, error: messagesError } = await getSupabase()
       .from('messages')
       .select('id,chat_id,sender_id,content,created_at')
       .eq('chat_id', chatId)

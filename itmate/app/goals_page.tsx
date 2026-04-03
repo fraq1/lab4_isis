@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 export default function NewGoalPage() {
@@ -41,7 +41,7 @@ export default function NewGoalPage() {
 
     setIsSaving(true)
 
-    const { error: insertError } = await supabase.from('goals').insert([
+    const { error: insertError } = await getSupabase().from('goals').insert([
       {
         title: title.trim(),
         topic: topic.trim() || 'Без темы',

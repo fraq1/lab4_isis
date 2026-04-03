@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
@@ -47,7 +47,7 @@ export default function ProfilePage() {
     }
 
     const loadUser = async () => {
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from('users')
         .select('email,username,avatar_url,bio,tech_stack,skill_level,trust_rating')
         .eq('id', stored)
@@ -90,7 +90,7 @@ export default function ProfilePage() {
       .map((item) => item.trim())
       .filter(Boolean)
 
-    const { error } = await supabase
+    const { error } = await getSupabase()
       .from('users')
       .update({
         username,

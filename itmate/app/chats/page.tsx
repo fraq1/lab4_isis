@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 type Chat = {
   id: string
@@ -41,7 +41,7 @@ export default function ChatsPage() {
         return
       }
 
-      const { data: chatsData, error: chatsError } = await supabase
+      const { data: chatsData, error: chatsError } = await getSupabase()
         .from('chats')
         .select('id,user1_id,user2_id,created_at')
         .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
@@ -63,7 +63,7 @@ export default function ChatsPage() {
 
       const partnerIds = Array.from(new Set((chatsData as Chat[]).flatMap((chat) => [chat.user1_id, chat.user2_id]).filter((id) => id !== userId)))
 
-      const { data: usersData, error: usersError } = await supabase
+      const { data: usersData, error: usersError } = await getSupabase()
         .from('users')
         .select('id,username,avatar_url')
         .in('id', partnerIds)
@@ -77,7 +77,7 @@ export default function ChatsPage() {
       setUsers((usersData as User[]).reduce((acc, u) => ({ ...acc, [u.id]: u }), {} as Record<string, User>))
 
       const chatIds = (chatsData as Chat[]).map((chat) => chat.id)
-      const { data: messagesData, error: messagesError } = await supabase
+      const { data: messagesData, error: messagesError } = await getSupabase()
         .from('messages')
         .select('id,chat_id,sender_id,content,created_at')
         .in('chat_id', chatIds)

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 // Добавляем тип для Goal
 type Goal = {
@@ -24,7 +24,7 @@ export default function ReportPage() {
   useEffect(() => {
     const userId = localStorage.getItem('userId')
     if (userId) {
-      supabase.from('goals').select('*').eq('created_by', userId).then(({ data }) => {
+      getSupabase().from('goals').select('*').eq('created_by', userId).then(({ data }) => {
         if (data) setGoals(data as Goal[])  // ✅ явное приведение типа
       })
     }
@@ -38,7 +38,7 @@ export default function ReportPage() {
       return
     }
 
-    const { error } = await supabase.from('reports').insert([{
+    const { error } = await getSupabase().from('reports').insert([{
       goal_id: selectedGoal,
       user_id: userId,
       report_date: reportDate,

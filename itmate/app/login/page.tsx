@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -23,7 +23,7 @@ export default function LoginPage() {
 
     setIsLoading(true)
 
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from('users')
       .select('id,email,username,password_hash')
       .eq('email', email)

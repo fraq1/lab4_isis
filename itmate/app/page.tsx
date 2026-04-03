@@ -1,6 +1,6 @@
 ﻿'use client'
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
@@ -35,7 +35,7 @@ export default function RegisterPage() {
 
     setIsLoading(true)
 
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from('users')
       .insert([
         {
