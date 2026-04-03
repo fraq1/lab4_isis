@@ -24,7 +24,7 @@ export default function ReportPage() {
   useEffect(() => {
     const userId = localStorage.getItem('userId')
     if (userId) {
-      getSupabase().from('goals').select('*').eq('created_by', userId).then(({ data }) => {
+      getSupabase().from('goals').select('*').eq('created_by', userId).then(({ data }: { data: any }) => {
         if (data) setGoals(data as Goal[])  // ✅ явное приведение типа
       })
     }

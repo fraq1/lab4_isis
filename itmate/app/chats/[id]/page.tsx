@@ -64,15 +64,17 @@ export default function ChatDetailPage() {
         return
       }
 
-      if (chatData.user1_id !== currentUserId && chatData.user2_id !== currentUserId) {
+      const typedChatData = chatData as Chat
+
+      if (typedChatData.user1_id !== currentUserId && typedChatData.user2_id !== currentUserId) {
         setError('Нет доступа к этому чату.')
         setLoading(false)
         return
       }
 
-      setChat(chatData)
+      setChat(typedChatData)
 
-      const partnerId = chatData.user1_id === currentUserId ? chatData.user2_id : chatData.user1_id
+      const partnerId = typedChatData.user1_id === currentUserId ? typedChatData.user2_id : typedChatData.user1_id
       const { data: userData, error: userError } = await getSupabase()
         .from('users')
         .select('id,username,avatar_url')
